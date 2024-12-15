@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="Headers.hpp" />
+    <ClInclude Include="Includes.UDK.hpp" />
+    <ClInclude Include="Init.hpp" />
+    <ClInclude Include="Common\Common.hpp">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Core.hpp">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\FName.hpp">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Frame.hpp">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\FString.hpp">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Misc.hpp">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\TArray.hpp">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\TMap.hpp">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="UDK\Core_classes.hpp">
+      <Filter>UDK</Filter>
+    </ClInclude>
+    <ClInclude Include="UDK\Core_f_structs.hpp">
+      <Filter>UDK</Filter>
+    </ClInclude>
+    <ClInclude Include="UDK\Core_structs.hpp">
+      <Filter>UDK</Filter>
+    </ClInclude>
+    <ClInclude Include="UDK\Engine_classes.hpp">
+      <Filter>UDK</Filter>
+    </ClInclude>
+    <ClInclude Include="UDK\Engine_f_structs.hpp">
+      <Filter>UDK</Filter>
+    </ClInclude>
+    <ClInclude Include="UDK\Engine_structs.hpp">
+      <Filter>UDK</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Init.cpp" />
+    <ClCompile Include="Common\Common.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="UDK\Core_functions.cpp">
+      <Filter>UDK</Filter>
+    </ClCompile>
+    <ClCompile Include="UDK\Engine_functions.cpp">
+      <Filter>UDK</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="SDK.natvis" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>{02016bb2-e0e7-4329-90a6-76b03ca8e75e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UDK">
+      <UniqueIdentifier>{6ca93db0-f629-4f22-b2d1-113158038f9b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

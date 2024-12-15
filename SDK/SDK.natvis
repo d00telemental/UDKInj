@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+    <Type Name="TArrayBase&lt;*&gt;" Inheritable="true">
+        <DisplayString Condition="Data == 0">empty</DisplayString>
+        <DisplayString Condition="CountItems == 0">{{ reserved={CountMax} }}</DisplayString>
+        <DisplayString>{{ count={CountItems} capacity={CountMax} }}</DisplayString>
+        <Expand>
+            <Item Name="[Pointer]">Data</Item>
+            <Item Name="[Count]">CountItems</Item>
+            <Item Name="[Capacity]">CountMax</Item>
+            <ArrayItems>
+                <Size>CountItems</Size>
+                <ValuePointer>Data</ValuePointer>
+            </ArrayItems>
+        </Expand>
+    </Type>
+    <Type Name="FStringBase&lt;*&gt;" Inheritable="true">
+        <DisplayString Condition="Storage.Data == 0">L&quot;&quot;</DisplayString>
+        <DisplayString Condition="Storage.CountItems == 0">L&quot;&quot; [reserved={Storage.CountMax - 1}]</DisplayString>
+        <DisplayString>{Storage.Data,su} [length={Storage.CountItems - 1}, reserved={Storage.CountMax - 1}]</DisplayString>
+        <Expand>
+            <Item Name="[Chars]" Condition="Storage.Data == 0">L&quot;&quot;</Item>
+            <Item Name="[Length]" Condition="Storage.CountItems == 0">Storage.CountItems</Item>
+            <Item Name="[Capacity]" Condition="Storage.CountMax == 0">Storage.CountMax</Item>
+
+            <Item Name="[Chars]">Storage.Data,su</Item>
+            <Item Name="[Length]">Storage.CountItems - 1</Item>
+            <Item Name="[Capacity]">Storage.CountMax - 1</Item>
+        </Expand>
+    </Type>
+    <Type Name="SFXName">
+        <DisplayString Condition="(((SFXNameEntry*)((char*)*(GBioNamePools + Chunk) + Offset))->Index.Flags &amp; 2) == 0">
+            {((SFXNameEntry*)((char*)*(GBioNamePools + Chunk) + Offset))->AnsiName}
+        </DisplayString>
+        <DisplayString Condition="(((SFXNameEntry*)((char*)*(GBioNamePools + Chunk) + Offset))->Index.Flags &amp; 2) != 0">
+            {((SFXNameEntry*)((char*)*(GBioNamePools + Chunk) + Offset))->WideName}
+        </DisplayString>
+        <Expand>
+            <Item Name="[Pool]">(GBioNamePools + Chunk)</Item>
+            <Item Name="[Entry]">(SFXNameEntry*)((char*)*(GBioNamePools + Chunk) + Offset)</Item>
+            <Item Name="[Flags]">((SFXNameEntry*)((char*)*(GBioNamePools + Chunk) + Offset))->Index.Flags</Item>
+            <Item Name="[Ansi value]">((SFXNameEntry*)((char*)*(GBioNamePools + Chunk) + Offset))->AnsiName</Item>
+            <Item Name="[Unicode value]">((SFXNameEntry*)((char*)*(GBioNamePools + Chunk) + Offset))->WideName</Item>
+        </Expand>
+    </Type>
+</AutoVisualizer>

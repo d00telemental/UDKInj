@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35506.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UDKInj", "UDKInj\UDKInj.csproj", "{CDCDA171-7B7D-4F58-9AFC-BB9A79E140E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UDKInj.Shell", "UDKInj.Shell\UDKInj.Shell.csproj", "{1578B437-66AA-4349-9F37-1677E8767FAB}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UDKAgent", "UDKAgent\UDKAgent.vcxproj", "{27C89F9B-68D6-4405-A347-2FF4251978CD}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libMinHook", "MinHook\build\VC17\libMinHook.vcxproj", "{F142A341-5EE0-442D-A15F-98AE9B48DBAE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDK", "SDK\SDK.vcxproj", "{2BCAEA70-4935-4B45-8167-4A6F057AEF39}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CDCDA171-7B7D-4F58-9AFC-BB9A79E140E8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CDCDA171-7B7D-4F58-9AFC-BB9A79E140E8}.Debug|x64.Build.0 = Debug|Any CPU
+		{CDCDA171-7B7D-4F58-9AFC-BB9A79E140E8}.Release|x64.ActiveCfg = Release|Any CPU
+		{CDCDA171-7B7D-4F58-9AFC-BB9A79E140E8}.Release|x64.Build.0 = Release|Any CPU
+		{1578B437-66AA-4349-9F37-1677E8767FAB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1578B437-66AA-4349-9F37-1677E8767FAB}.Debug|x64.Build.0 = Debug|Any CPU
+		{1578B437-66AA-4349-9F37-1677E8767FAB}.Release|x64.ActiveCfg = Release|Any CPU
+		{1578B437-66AA-4349-9F37-1677E8767FAB}.Release|x64.Build.0 = Release|Any CPU
+		{27C89F9B-68D6-4405-A347-2FF4251978CD}.Debug|x64.ActiveCfg = Debug|x64
+		{27C89F9B-68D6-4405-A347-2FF4251978CD}.Debug|x64.Build.0 = Debug|x64
+		{27C89F9B-68D6-4405-A347-2FF4251978CD}.Release|x64.ActiveCfg = Release|x64
+		{27C89F9B-68D6-4405-A347-2FF4251978CD}.Release|x64.Build.0 = Release|x64
+		{F142A341-5EE0-442D-A15F-98AE9B48DBAE}.Debug|x64.ActiveCfg = Debug|x64
+		{F142A341-5EE0-442D-A15F-98AE9B48DBAE}.Debug|x64.Build.0 = Debug|x64
+		{F142A341-5EE0-442D-A15F-98AE9B48DBAE}.Release|x64.ActiveCfg = Release|x64
+		{F142A341-5EE0-442D-A15F-98AE9B48DBAE}.Release|x64.Build.0 = Release|x64
+		{2BCAEA70-4935-4B45-8167-4A6F057AEF39}.Debug|x64.ActiveCfg = Debug|x64
+		{2BCAEA70-4935-4B45-8167-4A6F057AEF39}.Debug|x64.Build.0 = Debug|x64
+		{2BCAEA70-4935-4B45-8167-4A6F057AEF39}.Release|x64.ActiveCfg = Release|x64
+		{2BCAEA70-4935-4B45-8167-4A6F057AEF39}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
