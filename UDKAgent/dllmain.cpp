@@ -4,6 +4,8 @@
 #include <SDK/Headers.hpp>
 
 
+std::unique_ptr<UGHSDK::Initializer> gp_sdkInitializer;
+
 DWORD WINAPI OnAttachThread
 (
     [[maybe_unused]] LPVOID                     const lpParameter
@@ -12,12 +14,12 @@ DWORD WINAPI OnAttachThread
     LOG_INFO(L"Hello there, %s!", L"UDKAgent");
 
     UGHSDK::InitializeConsole();
-    UGHSDK::Initializer Initializer{};
+    gp_sdkInitializer = std::make_unique<UGHSDK::Initializer>();
 
-    GMalloc = Initializer.ResolveTyped<FMallocLike*>(BUILTIN_GMALLOC_RIP);
-    UObject::GObjObjects = Initializer.ResolveTyped<TArray<UObject*>>(BUILTIN_GOBOBJECTS_RIP);
-    FName::GNameArray = Initializer.ResolveTyped<TArray<FNameEntry*>>(BUILTIN_FNAMEARRAY_RIP);
-    FName::GInitMethod = Initializer.ResolveTyped<FName::tInitMethod>(BUILTIN_FNAMEINIT_PAT);
+    GMalloc = gp_sdkInitializer->ResolveTyped<FMallocLike*>(BUILTIN_GMALLOC_RIP);
+    UObject::GObjObjects = gp_sdkInitializer->ResolveTyped<TArray<UObject*>>(BUILTIN_GOBOBJECTS_RIP);
+    FName::GNameArray = gp_sdkInitializer->ResolveTyped<TArray<FNameEntry*>>(BUILTIN_FNAMEARRAY_RIP);
+    FName::GInitMethod = gp_sdkInitializer->ResolveTyped<FName::tInitMethod>(BUILTIN_FNAMEINIT_PAT);
 
     UGHSDK_CHECK(GMalloc != nullptr, "failed to resolve: GMalloc");
     UGHSDK_CHECK(UObject::GObjObjects != nullptr, "failed to resolve: UObject::GObjObjects");
@@ -40,7 +42,15 @@ DWORD WINAPI OnAttachThread
 
 VOID WINAPI OnDetach()
 {
+    if (!gp_sdkInitializer->UninstallAllHooks())
+    {
+        LOG_ERROR(L"Failed to uninstall one or more hooks!");
+        Sleep(1000);
+    }
+    gp_sdkInitializer.reset();
+
     LOG_INFO(L"Goodbye, %s...", L"UDKAgent");
+    UGHSDK::TerminateConsole();
 }
 
 ASI_EXPORT ExportListObjects()
@@ -51,7 +61,7 @@ ASI_EXPORT ExportListObjects()
     for (UObject* const Object : *UObject::GObjObjects)
     {
         if (Object == nullptr) continue;
-        LOG_INFO(L"[%llu] %s at %p", Counter++, *Object->GetFullName(), (void*)Object);
+        LOG_INFO(L"[%llu] %s at 0x%p", Counter++, *Object->GetFullName(), (void*)Object);
     }
 
     LOG_INFO(L"Done");

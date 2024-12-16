@@ -142,6 +142,56 @@ public sealed class Injector : IDisposable
         _loadedLibraries.Remove(dllFileInfo.FullName);
     }
 
+    public void Call(FileInfo dllFileInfo, string exportProcedure)
+    {
+        if (!_loadedLibraries.TryGetValue(dllFileInfo.FullName, out IntPtr dllModuleHandle))
+            throw new InvalidOperationException($"library {dllFileInfo.FullName} is not loaded");
+
+        var exportProcedureAscii = Encoding.ASCII.GetBytes(exportProcedure);
+
+        byte[] inputBuffer = new byte[8 /* sizeof(HMODULE) */ + exportProcedureAscii.Length + 1];
+        byte[] outputBuffer = new byte[8 /* sizeof(BOOL) + sizeof(DWORD) */];
+
+        BinaryPrimitives.WriteIntPtrLittleEndian(inputBuffer.AsSpan()[..8], dllModuleHandle);
+        Array.Copy(exportProcedureAscii, 0, inputBuffer, 8, exportProcedureAscii.Length);
+        inputBuffer[^1] = 0;
+
+        BinaryPrimitives.WriteInt32LittleEndian(outputBuffer, 0);
+
+        Execute(inputBuffer, outputBuffer, (asm) =>
+        {
+            asm.mov(r12, __qword_ptr[rcx]);
+            asm.mov(r13, __qword_ptr[rcx + 8]);
+
+            // Call GetProcAddress(module, name).
+            asm.mov(rcx, __qword_ptr[r12]);
+            asm.lea(rdx, __qword_ptr[r12 + 8]);
+            asm.mov(rax, GetProcAddressAddress);
+            asm.call(rax);
+            asm.mov(r14, rax);
+
+            // Always fill in default result value and GLE.
+            asm.mov(__dword_ptr[r13], 0);
+            asm.mov(rax, GetLastErrorAddress);
+            asm.call(rax);
+            asm.mov(__dword_ptr[r13 + 4], eax);
+
+            // Check if GetProcessAddress() failed.
+            asm.test(r14, r14);
+            asm.jz(asm.@F);
+
+            // Call the returned proc address.
+            asm.mov(__dword_ptr[r13], 1);
+            asm.call(r14);
+
+            asm.AnonymousLabel();
+        });
+
+        var returnValue = BinaryPrimitives.ReadInt32LittleEndian(outputBuffer.AsSpan()[0..4]);
+        var lastError = BinaryPrimitives.ReadInt32LittleEndian(outputBuffer.AsSpan()[4..8]);
+        if (returnValue == 0) throw new Win32Exception(lastError);
+    }
+
 
     #region Remote code execution.
 
@@ -279,6 +329,24 @@ public sealed class Injector : IDisposable
             }
 
             return _getLastErrorAddress;
+        }
+    }
+
+    IntPtr _getProcAddressAddress = IntPtr.Zero;
+    public IntPtr GetProcAddressAddress
+    {
+        get
+        {
+            if (_getProcAddressAddress == IntPtr.Zero)
+            {
+                IntPtr moduleHandle = Invoke.GetModuleHandleA("kernel32.dll");
+                Windows.ThrowIf(moduleHandle == IntPtr.Zero, "failed to find kernel32.dll module handle");
+
+                _getProcAddressAddress = Invoke.GetProcAddress(moduleHandle, "GetProcAddress");
+                Windows.ThrowIf(_getProcAddressAddress == IntPtr.Zero, "failed to find GetProcAddress proc handle");
+            }
+
+            return _getProcAddressAddress;
         }
     }
 

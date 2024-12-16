@@ -79,7 +79,8 @@ namespace UGHSDK {
         void*                   ModuleBase{ nullptr };
         std::vector<void*>      HookTargets{};
 
-        explicit Initializer();
+        Initializer();
+        ~Initializer() noexcept;
 
         void* Resolve(Address InAddr) const;
         void* InstallHook(void* Target, void* Detour);

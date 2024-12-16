@@ -64,6 +64,14 @@ namespace UGHSDK {
 
     Initializer::Initializer() {
         ModuleBase = GetMainModuleBase();
+        MH_STATUS const MinHookStatus = MH_Initialize();
+        UGHSDK_CHECK(MinHookStatus == MH_OK, "");
+    }
+
+    Initializer::~Initializer() noexcept
+    {
+        MH_STATUS const MinHookStatus = MH_Uninitialize();
+        UGHSDK_CHECK(MinHookStatus == MH_OK, "");
     }
 
     void* Initializer::Resolve(Address const InAddr) const {
@@ -110,6 +118,9 @@ namespace UGHSDK {
     }
 
     bool Initializer::UninstallAllHooks() {
+        if (HookTargets.empty())
+            return true;
+
         if (MH_DisableHook(MH_ALL_HOOKS) != MH_OK)
             return false;
 
